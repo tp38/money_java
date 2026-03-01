@@ -1,0 +1,60 @@
+@startuml 'diagramme d'objet MMR'
+
+object frame {
+    name: "money_main_frame"
+    title: "MyMoneyRelax x.y.z"
+}
+
+object money {
+    currentPane: "welcomeImg"
+}
+object menubar 
+
+money -- frame : > S'insére
+frame -- menubar
+
+object menuDb {
+    text: "Databases"
+    status: "Disabled"
+}
+
+object menuAccounts {
+    text: "Comptes"
+    status: "Disabled"
+}
+
+object menuCategories {
+    text: "Categories"
+    status: "Disabled"
+}
+
+object menuSearch {
+    text: "Recherches"
+    status: "Disabled"
+}
+
+object menuHelp {
+    text: "Aide"
+    status: "Disabled"
+}
+
+object info_text {
+    name: "info_text"
+    text: "Bienvenue sur MyMoneyRelax vx.y.z (dd.mm.yyyy)"
+}
+
+object welcomeImg {
+    name: "board_panel"
+    imageIcon : "cartoon-money.png"
+}
+
+welcomeImg - money : TOP_PANE
+money - info_text : BOTTOM_PANE
+
+menuDb - menubar
+menubar -- menuAccounts
+menubar -- menuCategories
+menubar -- menuSearch
+menubar - menuHelp
+
+@enduml

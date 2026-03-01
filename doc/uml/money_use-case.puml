@@ -1,0 +1,43 @@
+@startuml "use cases diagram"
+
+'left to right direction
+
+package money {
+    usecase DB as "
+    Databases
+    ==
+    list
+    connect
+    replicate
+    "
+
+    usecase Acc as "
+    Accounts
+    ==
+    summary
+    list ops
+    "
+
+    usecase Cat as "
+    Categories
+    ==
+    summary
+    list ops
+    "
+
+    usecase Op as "
+    Operation
+    ==
+    add   
+    del   
+    modify    
+    "
+}
+
+:user: --> (DB) 
+:user: --> (Acc)
+:user: --> (Cat)
+(Acc) --> (Op)
+(Cat) --> (Op)
+
+@enduml
