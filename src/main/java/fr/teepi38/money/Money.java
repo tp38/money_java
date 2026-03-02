@@ -1,10 +1,10 @@
 package fr.teepi38.money;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,9 +18,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
+
+import fr.teepi38.money.gui.MoneyHelper;
 /**
  * Main class for couchdb mney client
  * @author : <a href="mailto:thierry.probst@free.fr">Thierry Probst</a>
@@ -48,14 +51,22 @@ public class Money extends JSplitPane
 
         JMenu menuDb = new JMenu("Databases" );
         menuDb.setEnabled(false);
+
         JMenu menuAccounts = new JMenu("Comptes");
         menuAccounts.setEnabled(false);
+
         JMenu menuCategories = new JMenu("Categories");
         menuCategories.setEnabled(false);
+
         JMenu menuSearch = new JMenu("Recherches");
         menuSearch.setEnabled(false);
+
         JMenu menuHelp = new JMenu("Aide");
-        menuHelp.setEnabled(false);
+        menuHelp.setEnabled(true);
+        JMenuItem aboutItem = new JMenuItem("A propos de ...");
+        aboutItem.addActionListener( new AboutActionListener() );
+        menuHelp.add(aboutItem);
+
         menubar.add( menuDb );
         menubar.add(menuAccounts);
         menubar.add(menuCategories);
@@ -87,27 +98,16 @@ public class Money extends JSplitPane
         setBottomComponent(info_text);
         setPreferredSize( new Dimension(800, 50));
 
-        setResizeWeight(0.9);
-        resetToPreferredSizes();
+        // setResizeWeight(0.9);
+        // resetToPreferredSizes();
     }
 
-    public static BufferedImage resizeImage(BufferedImage originalImage, int targetWidth, int targetHeight) {
-        // Calculate scaling factors to maintain aspect ratio (optional but recommended)
-        double scaleX = (double) targetWidth / originalImage.getWidth();
-        double scaleY = (double) targetHeight / originalImage.getHeight();
-        double scale = Math.min(scaleX, scaleY); // Use the smaller scale to fit within target dimensions
-    
-        int newWidth = (int) (originalImage.getWidth() * scale);
-        int newHeight = (int) (originalImage.getHeight() * scale);
-    
-        // Create a scaled image using AffineTransformOp for better quality
-        BufferedImage resizedImage = new BufferedImage(newWidth, newHeight, originalImage.getType());
-        AffineTransform transform = AffineTransform.getScaleInstance(scale, scale);
-        AffineTransformOp op = new AffineTransformOp(transform, AffineTransformOp.TYPE_BILINEAR);
-        op.filter(originalImage, resizedImage);
-    
-        return resizedImage;
-    }
+    private class AboutActionListener implements ActionListener {
+        public void actionPerformed( ActionEvent e ) {
+            MoneyHelper moneyhelper = new MoneyHelper(frame);
+            moneyhelper.about( appName, appVersion, appDate, "https://github.com/tp38/money_java/blob/main/README.md" );
+        }
+    }    
 
     public static void readProperties() {
         Properties props = new Properties();
@@ -131,6 +131,7 @@ public class Money extends JSplitPane
         frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         frame.addWindowListener( new ApplicationExit() );
         frame.setPreferredSize( new Dimension( 800, 600 ) );
+        frame.setLocation(200, 200);
 
         JComponent mainPane = new Money( frame );
         mainPane.setOpaque(true);

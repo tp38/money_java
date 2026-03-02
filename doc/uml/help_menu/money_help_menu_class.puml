@@ -1,0 +1,22 @@
+@startuml 'diagramme de classe - menu "Aide"'
+
+class JFrame
+
+class AboutActionListener {
+    + actionPerformed( ActionEvent e )
+}
+
+class MoneyHelper {
+    - parent
+    + MoneyHelper()
+    + about( String name, String version, String date, String url )
+}
+
+interface ActionListener 
+
+AboutActionListener --> ActionListener
+JFrame *-- AboutActionListener
+AboutActionListener *- MoneyHelper
+MoneyHelper *- JOptionPane
+
+@enduml

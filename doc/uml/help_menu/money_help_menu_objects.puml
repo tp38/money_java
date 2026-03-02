@@ -1,0 +1,34 @@
+@startuml 'diagramm d'objet money'
+
+object frame {
+    name: "money_main_frame"
+    title: "MyMoneyRelax x.y.z"
+}
+
+object aboutListener
+
+object menuhelp {
+    name: "menuhelp"
+}
+
+object aboutItem
+
+object moneyhelper
+
+object dialog {
+    name: "about_dialog"
+    parent: "frame"
+    title: "A propos de ..."
+    app: "MyMoneyRelax"
+    version: "x.y.z"
+    date: "dd.mm.yyyy"
+    url: "https://github.com/tp38/money_java/blob/main/README.md"
+}
+
+frame - menuhelp 
+menuhelp - aboutItem
+aboutItem - aboutListener
+aboutListener - moneyhelper
+moneyhelper - dialog
+
+@enduml

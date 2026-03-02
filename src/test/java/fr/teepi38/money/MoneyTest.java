@@ -55,7 +55,7 @@ public class MoneyTest extends AssertJSwingJUnitTestCase
             .requireDisabled();
         findFrame("money_main_frame").using(robot()).menuItemWithPath("Aide")
             .requireVisible()
-            .requireDisabled();
+            .requireEnabled();
     }
 
     @Test
