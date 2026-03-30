@@ -1,0 +1,19 @@
+@startuml 'Money_java - communication'
+
+
+object main_money_menu
+main_money_menu : welcome
+main_money_menu : about = click
+main_money_menu : readme 
+
+object money_controler
+money_controler : help_manager
+
+main_money_menu -- money_controler : > request
+
+object current_panel
+
+money_controler -- current_panel : > help_about_panel
+
+
+@enduml

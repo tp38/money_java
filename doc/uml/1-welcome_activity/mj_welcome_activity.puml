@@ -1,0 +1,32 @@
+@startuml "money java activités"
+
+start
+:welcome window;
+note right 
+   **welcome salt**
+   show :
+   <color:#9a9a9a>- a menubar (main_menu on top of main_panel) with :
+   <color:#9a9a9a>     1. "Compte", "Categories", "Recherche" (disabled if 
+   <color:#9a9a9a>     no selected db and no auth)
+   <color:#9a9a9a>     2. "Aide", "Quitter" enabled 
+   - a center panel with a jsplitpane : 
+        1. image cartoon-money.png (Left)
+        2. known db list (Right) with two buttons :
+            * replicate : with a listener that launch
+            replicate method 
+            * connect : with a listenerthat open an
+            authentication (login/password) dialog.  
+   <color:#9a9a9a>- info message label (on bottom of main_panel)
+end note
+:select a db;<<#LightBlue>>
+note
+    enable connect button.
+    if selectDb == local 
+    enable also replicate buttons
+end note 
+if (replicate_btn and server == local and accessible) then (yes)
+    :replicate;<<#Orange>>
+endif
+:login;
+end
+@enduml

@@ -1,0 +1,23 @@
+@startsalt 'Welcome Salt'
+{
+<b>MyMoneyRelax x.y.z</b>
+{* <color:#9a9a9a>Comptes | <color:#9a9a9a>Categories | <color:#9a9a9a>Recherches | Aide | Quitter }
+.
+{
+{ 
+.            //image//               . 
+.    **money-cartoon**      .         
+} | {
+    {T-
+    localhost | budget_dev
+    yoda | budget 
+    }
+    {[<color:#9a9a9a>Connect]|[<color:#9a9a9a>Replicate]}
+     
+}
+}
+.
+--
+Welcome to MyMoneyRelax
+}
+@endsalt

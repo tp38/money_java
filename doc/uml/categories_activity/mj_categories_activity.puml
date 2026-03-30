@@ -1,0 +1,16 @@
+@startuml "money java activités"
+
+start
+    -> "Categories" button;
+    :show categories
+    summary;
+    note
+        **cats list salt**
+        one line per category with :
+        - category name 
+        - credit amount
+        - debit amount
+    end note
+    :select a category;<<#LightBlue>>
+end
+@enduml

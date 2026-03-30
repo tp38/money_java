@@ -1,0 +1,46 @@
+@startuml 'diagram class MyMoneyRelax'
+
+object welcome_panel
+welcome_panel : name = "welcome_panel"
+
+object image_panel 
+image_panel : name = "image_panel"
+
+object db_chooser 
+db_chooser : name = "db_chooser"
+
+object db_list 
+db_list : name = "db_list"
+
+object data 
+
+note right of data
+    read data from db.txt
+    single_selection list
+end note
+
+db_chooser *-- data
+
+welcome_panel "leftComponent" *-- image_panel
+welcome_panel "rightComponent" *-- db_chooser
+
+object connect_btn
+connect_btn : name = "db_connect_btn"
+
+object replicate_btn
+replicate_btn : name = "db_replicate_btn"
+
+db_chooser -> db_list
+db_list --> data
+db_chooser *-- connect_btn
+db_chooser *-- replicate_btn
+
+note as N1
+buttons disabled when any db selected
+enabled otherwise.
+end note
+
+connect_btn .. N1
+replicate_btn .. N1
+data .. N1
+@enduml

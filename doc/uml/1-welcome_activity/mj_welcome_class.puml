@@ -1,0 +1,65 @@
+@startuml 'diagram class MyMoneyRelax'
+
+hide empty members
+
+
+
+class JSplitPanel #LightGreen
+WelcomePanel -|> JSplitPanel
+
+class ImagePanel 
+
+class JLabel #LightGreen
+ImagePanel -left-|> JLabel
+
+class JPanel #LightGreen {
+    <color:#9a9a9a>layoutmanager = GridBagLayout
+}
+
+class DbChooser
+
+
+DbChooser -|> JPanel
+
+WelcomePanel "left" *-- ImagePanel
+WelcomePanel "right" *-- DbChooser
+
+class DefaultListModel<String> #LightGreen
+DbChooser "data" *-- DefaultListModel
+note bottom
+    read data (CouchDatabase) from db.json
+end note
+
+class JList #LightGreen
+DbChooser --> JList
+note bottom
+    single_selection list
+end note
+
+DefaultListModel <- JList
+
+class JButton #LightGreen
+DbChooser --> JButton
+
+class CouchDatabase {
+    - url : URI
+    - repl_init : String
+    - repl_save : String
+    + @Getters()
+    + @Setters()
+    + @toString() : String
+    + summary() : String
+}
+
+DbChooser "currentDb" *--> CouchDatabase
+
+
+note bottom of JButton
+disabled when any db selected
+enabled otherwise
+ 1. Connect
+ 2. Replicate 
+end note
+
+
+@enduml

@@ -1,0 +1,8 @@
+@startsalt 'Welcome Salt'
+{
+<b>Login</b>
+user : | "            "
+password : | "            "
+[ validate ] | [ cancel ]
+}
+@endsalt

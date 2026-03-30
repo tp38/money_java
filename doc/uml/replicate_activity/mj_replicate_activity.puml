@@ -1,0 +1,14 @@
+@startuml "money java activités"
+
+start
+    -> replicate button;
+    if ( selectDb == local ) then (yes)
+        :replicate;<<#Orange>>
+        note right
+            from server to local or
+            from local to server
+            with admin login/password
+        end note
+    endif
+end
+@enduml

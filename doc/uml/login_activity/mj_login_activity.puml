@@ -1,0 +1,17 @@
+@startuml "money java activités"
+
+start
+-> connect button;
+repeat
+    :login dialog;
+    note right
+        **login salt** :
+        - login field (+label)
+        - password field (+label)
+        - validate and cancel buttons
+    end note
+    :authenticate to db;<<#LightBlue>>
+repeat while (succeed ?)
+-> yes;
+end
+@enduml

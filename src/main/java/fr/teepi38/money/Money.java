@@ -1,178 +1,118 @@
 package fr.teepi38.money;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Properties;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
-import javax.swing.JSplitPane;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import fr.teepi38.money.gui.MoneyHelper;
+import fr.teepi38.money.gui.InfoMessage;
+import fr.teepi38.money.gui.WelcomePanel;
 /**
  * Main class for couchdb mney client
  * @author : <a href="mailto:thierry.probst@free.fr">Thierry Probst</a>
- * @version 0.0.3, 18/02/2026
+ * @version 0.3, 21/03/2026
  * @since 0.0.0
  */
-public class Money extends JSplitPane
+public class Money extends JFrame
 {
 
-    private static String appName;
-    private static String appVersion;
-    private static String appDate;
+    private MoneyControler money_controler;
 
-    private static JFrame frame;
+    // protected HelpManager help;
+    protected AppDef app;
+    protected MoneyMenu main_menu_bar;
+    protected JPanel current_panel;
+    protected InfoMessage info_msg;
 
-    public Money( JFrame parent ) {
-        super( JSplitPane.VERTICAL_SPLIT );
-        frame = parent;
+    /**
+     * constructor
+     * @param parent the parent frame
+     * @since 0.3
+     * @see javax.swing.JFrame
+     */
+    public Money( AppDef app ) {
+        // the frame container
+        super(app.getName() + " - " + app.getVersion());
+        setName("money_frame");
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        addWindowListener( new ApplicationExit() );
+        setPreferredSize( new Dimension( 800, 600 ) );
+        setLocation(200, 200);
 
-        setName("mainPane");
-
-        // menu
-        JMenuBar menubar = new JMenuBar();
-        menubar.setName("menuBar");
-
-        JMenu menuDb = new JMenu("Databases" );
-        menuDb.setEnabled(false);
-
-        JMenu menuAccounts = new JMenu("Comptes");
-        menuAccounts.setEnabled(false);
-
-        JMenu menuCategories = new JMenu("Categories");
-        menuCategories.setEnabled(false);
-
-        JMenu menuSearch = new JMenu("Recherches");
-        menuSearch.setEnabled(false);
-
-        JMenu menuHelp = new JMenu("Aide");
-        menuHelp.setEnabled(true);
-        JMenuItem aboutItem = new JMenuItem("A propos de ...");
-        aboutItem.addActionListener( new AboutActionListener() );
-        menuHelp.add(aboutItem);
-
-        menubar.add( menuDb );
-        menubar.add(menuAccounts);
-        menubar.add(menuCategories);
-        menubar.add(menuSearch);
-        menubar.add(menuHelp);
-
-        frame.setJMenuBar( menubar );
-
-        // welcome image
-        try {
-            File f = new File("src/main/ressources/cartoon-money.png" );
-            BufferedImage bufferedImage = ImageIO.read( f );
-            ImageIcon welcomeIcon = new ImageIcon(bufferedImage);
-            JLabel welcomeImg = new JLabel(welcomeIcon);
-            welcomeImg.setName("board_panel");
-            welcomeImg.setToolTipText("cartoon-money.png");
-            setTopComponent( welcomeImg );
-
-        } catch ( IOException e ) {
-            JLabel welcomLabel = new JLabel("impossible d'ouvrir cartoon-money.png");
-            setTopComponent(welcomLabel);
-            // e.printStackTrace();
-        }
-
-
-        // info_text
-        JLabel info_text = new JLabel("Bienvenue sur " + appName + " v" + appVersion + " (" + appDate + ")");
-        info_text.setName("info_text");
-        setBottomComponent(info_text);
-        setPreferredSize( new Dimension(800, 50));
-
-        // setResizeWeight(0.9);
-        // resetToPreferredSizes();
-    }
-
-    private class AboutActionListener implements ActionListener {
-        public void actionPerformed( ActionEvent e ) {
-            MoneyHelper moneyhelper = new MoneyHelper(frame);
-            moneyhelper.about( appName, appVersion, appDate, "https://github.com/tp38/money_java/blob/main/README.md" );
-        }
-    }    
-
-    public static void readProperties() {
-        Properties props = new Properties();
-        try ( FileInputStream fis = new FileInputStream("src/main/ressources/conf.properties") ) {
-            props.load( fis );
-            appName = props.getProperty("application.name");
-            appVersion = props.getProperty("application.version");
-            appDate = props.getProperty("application.date");
-        } catch( Exception e ) {
-            System.out.println( "impossible d'ouvrir le fichier conf.properties ");
-            appName = new String( "MyMoneyRelax");
-            appVersion = new String( "0.0.0" );
-            appDate = new String("27.02.2026");
-            // e.printStackTrace();
-        }
-    }
-
-    public static void createAndShowGUI() {
-        frame = new JFrame(appName + " - " + appVersion);
-        frame.setName("money_main_frame");
-        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        frame.addWindowListener( new ApplicationExit() );
-        frame.setPreferredSize( new Dimension( 800, 600 ) );
-        frame.setLocation(200, 200);
-
-        JComponent mainPane = new Money( frame );
+        // the main panel with a border layout
+        JPanel mainPane = new JPanel( new BorderLayout() );
+        mainPane.setName("money_panel");
         mainPane.setOpaque(true);
-        frame.setContentPane(mainPane);
+        setContentPane(mainPane);
 
-        frame.pack();
-        frame.setVisible(true);
+        // help = new HelpManager(app);
+
+        // menu on the north zone
+        money_controler = new MoneyControler( this );
+        main_menu_bar = new MoneyMenu( money_controler );
+        add( main_menu_bar, BorderLayout.PAGE_START );
+
+        // welcome image on the center zone
+        WelcomePanel welcomePane = new WelcomePanel();
+        current_panel = welcomePane;
+        add( welcomePane, BorderLayout.CENTER );
+
+        // info_msg on the south zone
+        info_msg = new InfoMessage();
+        SimpleDateFormat sdf = new SimpleDateFormat( "dd.MM.yyyy" );
+        info_msg.setText("Bienvenue sur " + app.getName() + " v" + app.getVersion() + " (" + sdf.format( app.getDate() ) + ")");
+        add(info_msg, BorderLayout.PAGE_END);
+
+        pack();
+        setVisible(true);
     }
+
+
+    /**
+     * read some static data from conf.properties 
+     * @since 0.2
+     */
+    public static AppDef readProperties() {
+        AppDef app = AppDef.builder().build();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+
+        Properties props = new Properties();
+        try ( FileInputStream fis = new FileInputStream("src/main/resources/conf.properties") ) {
+            props.load( fis );
+            app.setName( props.getProperty("application.name") );
+            app.setVersion( props.getProperty("application.version") );
+            app.setDate( sdf.parse( props.getProperty("application.date") ) );
+        } catch( Exception e ) {
+            // System.out.println( "impossible d'ouvrir le fichier conf.properties ");
+            e.printStackTrace();
+        }
+        return app;
+    }
+
 
     /**
      * the main function
      * 
      * @param args a String array contening all CLI options
-     * @since 0.0.0
+     * @since 0.0
      * @throws Exception exception
      */
     public static void main(String[] args) throws Exception {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                readProperties();
-                createAndShowGUI();
+                AppDef app = readProperties();
+                new Money( app );
             }
         });
 
     }
+    
 }
 
-class ApplicationExit extends WindowAdapter {
-    public void windowClosing( WindowEvent e) {
-        JFrame frame = (JFrame)e.getSource();
 
-        int result = JOptionPane.showConfirmDialog(
-            frame,
-            "Êtes vous sur de vouloir quitter l'application ?",
-            "Quitter MyMoneyRelax",
-            JOptionPane.YES_NO_OPTION );
-        
-        if( result == JOptionPane.YES_OPTION ) {
-            frame.setDefaultCloseOperation( JFrame.DISPOSE_ON_CLOSE );
-        }
-    }
-}
 

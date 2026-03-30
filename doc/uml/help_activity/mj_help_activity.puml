@@ -1,0 +1,16 @@
+@startuml "money java activités"
+
+start
+    -> "Aide" menuitem;
+    split
+        -> "Accueil";
+        :welcome;
+    split again
+        -> "Lisez moi";
+        :readme;
+    split again
+        -> "A propos ...";
+        :about;
+    end split
+end
+@enduml

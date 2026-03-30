@@ -1,0 +1,41 @@
+@startuml 'Money_java - objets'
+object money_app
+money_app : name = "money_frame"
+money_app : title = "app:name - app:version"
+
+object app
+app : name = "My Money Relax"
+app : version = "x.y.z"
+app : date : "dd/mm/yyyy"
+app : author = "Thierry Probst"
+
+object money_panel
+money_panel : name = "money_panel"
+money_panel : <color:#9a9a9a>layout = "BorderLayout"
+
+object money_controler
+
+object main_menu_bar
+main_menu_bar : name = "main_menu_bar"
+
+object info_msg
+info_msg : name = "info_msg"
+
+object current_panel
+
+
+money_app *- app
+money_app "contentPanel" *-- money_panel
+
+money_app *-- main_menu_bar
+money_app *-- info_msg
+money_app *-- current_panel
+
+main_menu_bar -- money_panel : < use on TOP
+info_msg -- money_panel : < use on BOTTOM
+current_panel -- money_panel : < use on CENTER
+
+money_controler -* money_app
+
+
+@enduml

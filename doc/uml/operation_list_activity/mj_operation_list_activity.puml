@@ -1,0 +1,22 @@
+@startuml "money java activités"
+
+start
+    :view operation list;
+    note
+        **ops list salt**
+        one line per operation with :
+        - date, comment, amount, mode
+        - color depends of status ( check=blue
+        done=orange and upcoming=lightgrey )
+    end note
+    :select an operation;<<#LightBlue>>
+    :operation popup menu;
+    note right
+        **popupmenu salt**
+        edit
+        delete
+        change status depending
+        of actual status
+    end note
+end
+@enduml

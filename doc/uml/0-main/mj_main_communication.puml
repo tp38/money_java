@@ -1,0 +1,16 @@
+@startuml 'Money_java - communication'
+
+
+object main_money_menu
+object money_controler
+object info_msg
+object current_panel
+
+main_money_menu -- money_controler : > request
+
+money_controler -- current_panel : > update
+money_controler -- info_msg : > set
+
+
+
+@enduml

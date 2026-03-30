@@ -1,0 +1,12 @@
+@startuml "money java activités"
+
+start
+    -> "Recherche" button;
+    :search form;
+    note
+        **search form salt**
+        - from date to date
+        - for a specific external account
+    end note
+end
+@enduml

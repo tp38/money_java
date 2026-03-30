@@ -1,0 +1,80 @@
+@startuml 'diagram class MyMoneyRelax'
+
+hide empty members
+
+class Money {
+    + Money()
+    + readConfProperties()
+    + main()
+}
+
+class JFrame #LightGreen {
+    - <color:#9a9a9a>String name
+    - <color:#9a9a9a>String title
+    - <color:#9a9a9a>JPanel contentPane
+    + setContentPane()
+    + setName()
+}
+
+Money -left-|> JFrame 
+
+class AppDef {
+    - String name
+    - String version
+    - Date date
+    - String author
+    + @getters()
+    + @setters()
+}
+
+class JPanel #LightGreen {
+    - <color:#9a9a9a>String name
+    - <color:#9a9a9a>LayoutManager layout
+}
+
+class MoneyControler {
+    + void actionPerformed( ActionEvent e)
+
+}
+
+Interface ActionListener #LightGreen
+
+MoneyControler -up-|> ActionListener
+
+class MoneyMenu {
+    - String name
+    + MoneyMenu( MoneyControler c )
+}
+
+class JMenuBar #LightGreen
+
+MoneyMenu --|> JMenuBar
+
+
+class InfoMessage {
+    - String name
+    + void infoText( String msg )
+}
+
+class JLabel #LightGreen
+
+InfoMessage --|> JLabel
+
+class MoneyPanel {
+
+}
+
+MoneyPanel --|> JPanel
+
+Money "app" *- AppDef
+Money -- JPanel
+
+Money *-- "main_menu_bar" MoneyMenu
+Money "info_msg" *-- InfoMessage
+
+MoneyMenu -left- JPanel : < use on TOP
+InfoMessage -right- JPanel : < use on BOTTOM
+JPanel -- MoneyPanel : > use on CENTER
+
+Money "money_controler" *-up- MoneyControler
+@enduml

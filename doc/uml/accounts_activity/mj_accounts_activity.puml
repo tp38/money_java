@@ -1,0 +1,16 @@
+@startuml "money java activités"
+
+start
+    :show accounts
+    summary;
+    note
+        **accounts list salt** :
+        one line per account with :
+        - account name (first column)
+        - check amount (second column, blue characters)
+        - done amount (third column, orange chars)
+        - upcoming amount (fourth column, lightgrey chars)
+    end note
+    :select an account;<<#LightBlue>>
+end
+@enduml
