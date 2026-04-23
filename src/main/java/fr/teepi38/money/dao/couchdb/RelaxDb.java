@@ -1,4 +1,4 @@
-package fr.teepi38.money;
+package fr.teepi38.money.dao.couchdb;
 
 import java.net.URI;
 
@@ -9,7 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 /**
  * a class to access to CouchDb Database with it's replication documents
  * @author : <a href="mailto:thierry.probst@free.fr">Thierry Probst</a>
@@ -19,7 +18,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Data
 @Builder
 @Jacksonized @Accessors( fluent = true )
-public class CouchDatabase {
+public class RelaxDb {
     private URI url;
     private String repl_init;
     private String repl_save;

@@ -1,0 +1,9 @@
+[ {
+  "url" : "http://localhost:5984/budget_dev",
+  "repl_init" : "my-fantastic-replication-doc-id",
+  "repl_save" : "another-super-id"
+}, {
+  "url" : "http://yoda:5984/budget",
+  "repl_init" : null,
+  "repl_save" : null
+} ]

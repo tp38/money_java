@@ -26,14 +26,8 @@ repeat
         :help;
     split again
         -> "Quitter" item;
-        #Green:(A)
-        detach
     end split
 repeat while ( close window ? )
 -> Yes;
-#Green:(A)
-if(replicate_btn and server == local and accessible) then (yes)
-    :replicate;<<#Yellow>>
-endif
 end
 @enduml

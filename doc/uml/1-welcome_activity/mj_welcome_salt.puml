@@ -8,11 +8,16 @@
 .            //image//               . 
 .    **money-cartoon**      .         
 } | {
+    **Databases :**
     {T-
     localhost | budget_dev
     yoda | budget 
     }
-    {[<color:#9a9a9a>Connect]|[<color:#9a9a9a>Replicate]}
+    **Login :**
+    "          "
+    **Password :**
+    "          "
+    {[<color:#9a9a9a>Connect]}
      
 }
 }

@@ -8,7 +8,6 @@ package money {
     ==
     list
     connect
-    replicate
     "
 
     usecase Acc as "

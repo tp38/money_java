@@ -6,41 +6,31 @@ welcome_panel : name = "welcome_panel"
 object image_panel 
 image_panel : name = "image_panel"
 
-object db_chooser 
-db_chooser : name = "db_chooser"
+object db_chooser_panel 
+db_chooser_panel : name = "db_chooser_panel"
+
+object cur_db
+cur_db : uri = "http://hostname:port/database"
 
 object db_list 
 db_list : name = "db_list"
 
 object data 
 
-note right of data
-    read data from db.txt
-    single_selection list
-end note
+object valid_btn
+valid_btn : name = "valid_btn"
 
-db_chooser *-- data
+object cur_cred
+cur_cred : login = "couchdb"
+cur_cred : pwd = "couchdb"
 
 welcome_panel "leftComponent" *-- image_panel
-welcome_panel "rightComponent" *-- db_chooser
+welcome_panel "rightComponent" *-- db_chooser_panel
+cur_db -* db_chooser_panel
+db_chooser_panel -* cur_cred
+db_chooser_panel *-- data
+db_chooser_panel --> db_list
+data <- db_list
+db_chooser_panel --> valid_btn
 
-object connect_btn
-connect_btn : name = "db_connect_btn"
-
-object replicate_btn
-replicate_btn : name = "db_replicate_btn"
-
-db_chooser -> db_list
-db_list --> data
-db_chooser *-- connect_btn
-db_chooser *-- replicate_btn
-
-note as N1
-buttons disabled when any db selected
-enabled otherwise.
-end note
-
-connect_btn .. N1
-replicate_btn .. N1
-data .. N1
 @enduml

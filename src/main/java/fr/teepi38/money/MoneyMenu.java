@@ -10,7 +10,10 @@ import javax.swing.JMenuItem;
  * @version 0.0
  * @see javax.swing.JMenuBar
  */
-class MoneyMenu extends JMenuBar {
+public class MoneyMenu extends JMenuBar {
+    private JMenu menuAccounts;
+    private JMenu menuCategories;
+    private JMenu menuSearch;
 
     /**
      * constructor
@@ -21,19 +24,20 @@ class MoneyMenu extends JMenuBar {
         super();
         setName("menuBar");
 
-        JMenu menuDb = new JMenu("Databases" );
-        menuDb.setEnabled(false);
-
-        JMenu menuAccounts = new JMenu("Comptes");
+        menuAccounts = new JMenu("Comptes");
         menuAccounts.setEnabled(false);
+        JMenuItem accountItem = new JMenuItem( "Comptes" );
+        menuAccounts.add( accountItem );
 
-        JMenu menuCategories = new JMenu("Categories");
+        menuCategories = new JMenu("Categories");
         menuCategories.setEnabled(false);
 
-        JMenu menuSearch = new JMenu("Recherches");
+        menuSearch = new JMenu("Recherches");
         menuSearch.setEnabled(false);
 
         JMenu menuHelp = new JMenu("Aide");
+        JMenu menuQuitter = new JMenu("Quitter");
+
         menuHelp.setEnabled(true);
         JMenuItem welcomeItem = new JMenuItem("Accueil");
         welcomeItem.setName("welcome_item" );
@@ -50,10 +54,21 @@ class MoneyMenu extends JMenuBar {
         readmeItem.addActionListener( mi );
         menuHelp.add(readmeItem);
 
-        add( menuDb );
+        JMenuItem exitItem = new JMenuItem("Quitter");
+        exitItem.setName("exit_item");
+        exitItem.addActionListener( mi );
+        menuQuitter.add(exitItem);
+
         add( menuAccounts );
         add( menuCategories );
         add( menuSearch );
         add( menuHelp );
+        add( menuQuitter );
+    }
+
+    public void enableEntries() {
+        menuAccounts.setEnabled(true);
+        menuCategories.setEnabled(true);
+        menuSearch.setEnabled(true);
     }
 }

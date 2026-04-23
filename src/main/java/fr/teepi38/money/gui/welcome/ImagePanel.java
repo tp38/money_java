@@ -1,4 +1,4 @@
-package fr.teepi38.money.gui;
+package fr.teepi38.money.gui.welcome;
 
 
 import java.awt.image.BufferedImage;
@@ -10,23 +10,23 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class WelcomePanel extends JPanel {
+public class ImagePanel extends JPanel {
 
-    public WelcomePanel() {
-        setName("welcome_panel");
+    public ImagePanel() {
+        setName("image_panel");
         // welcome image
-        JLabel welcomeImg = new JLabel();
-        welcomeImg.setName("welcome_img");
-        welcomeImg.setToolTipText("cartoon-money.png");
+        JLabel welcomeLbl = new JLabel();
+        welcomeLbl.setName("welcome_img");
+        welcomeLbl.setToolTipText("cartoon-money.png");
         try {
             File f = new File("src/main/resources/cartoon-money.png" );
             BufferedImage bufferedImage = ImageIO.read( f );
             ImageIcon welcomeIcon = new ImageIcon(bufferedImage);
-            welcomeImg.setIcon(welcomeIcon);
+            welcomeLbl.setIcon(welcomeIcon);
         } catch ( IOException e ) {
-            welcomeImg.setText("impossible d'ouvrir cartoon-money.png");
+            welcomeLbl.setText("impossible d'ouvrir cartoon-money.png");
         } finally {
-            add( welcomeImg );
+            add( welcomeLbl );
         }
     }
 }

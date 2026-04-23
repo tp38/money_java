@@ -5,8 +5,13 @@ object main_money_menu
 object money_controler
 object info_msg
 object current_panel
+object business_obj
 
 main_money_menu -- money_controler : > request
+
+money_controler - business_obj : > create
+business_obj - money_controler : msg >
+business_obj - money_controler : panel >
 
 money_controler -- current_panel : > update
 money_controler -- info_msg : > set

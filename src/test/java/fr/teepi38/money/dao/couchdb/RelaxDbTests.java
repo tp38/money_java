@@ -1,29 +1,28 @@
-package fr.teepi38.money;
+package fr.teepi38.money.dao.couchdb;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import java.net.URI;
 
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 
-public class CouchDatabaseTest extends AssertJSwingJUnitTestCase {
-    private CouchDatabase db;
+public class RelaxDbTests {
+    private RelaxDb db;
 
-    @Override
+    @BeforeEach
     protected void onSetUp() throws Exception {
         try {
-            db = CouchDatabase.builder()
+            db = RelaxDb.builder()
                 .url(new URI("http://localhost:5984/budget"))
-                .repl_init(null)
-                .repl_save(null)
                 .build();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }    
+    
     @Test
     public void replication_doc_default_to_null() {
         assertNull( db.repl_init() );
@@ -39,4 +38,5 @@ public class CouchDatabaseTest extends AssertJSwingJUnitTestCase {
     public void have_a_get_url_method() {
         assertEquals("http://localhost:5984/budget", db.url().toString() );
     }
+
 }

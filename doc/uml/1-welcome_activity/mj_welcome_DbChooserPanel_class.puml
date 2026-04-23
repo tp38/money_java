@@ -1,0 +1,71 @@
+@startuml 'diagram class MyMoneyRelax'
+
+hide empty members
+
+class DbChooserPanel {
+    + getCurDb() : RelaxDb
+    + getCurCredential() : Credential
+}
+
+class JPanel #LightGreen {
+    <color:#9a9a9a>layoutmanager = GridBagLayout
+}
+
+class JList #LightGreen {
+    - single_selection
+}
+
+class JButton #LightGreen
+
+class DefaultListModel<RelaxDb> #LightGreen
+
+class RelaxDb {
+    - url : URI
+    - auth : String
+    + @Getters()
+    + @Setters()
+    + @toString() : String
+    + summary() : String
+    + equals( Object o ) : boolean
+}
+
+class Credential {
+    - login : String
+    - pwd : String
+    + @Getters()
+    + @Setters()
+    + @Builder()
+    + getBasicAuth() : String
+    + equals( Object o ) : boolean
+}
+
+class JTextField #LightGreen
+class JPasswordField #LightGreen
+class JLabel #LightGreen
+
+interface ActionListener {
+    {abstract} actionPerformed( ActionEvent e ) : void
+}
+
+DbChooserPanel -up-|> JPanel
+
+DbChooserPanel -up-+ ActionListener
+DefaultListModel -* "data" DbChooserPanel
+DbChooserPanel "db_list" *-up- JList
+JList --> DefaultListModel
+DbChooserPanel -> JButton
+DbChooserPanel --> JLabel
+DbChooserPanel --> JTextField
+DbChooserPanel --> JPasswordField
+DbChooserPanel *-- "current_db" RelaxDb
+DbChooserPanel *-- "current_cred" Credential
+
+
+note left of DefaultListModel
+read data (RelaxDb) from databases.json
+end note
+
+
+
+
+@enduml

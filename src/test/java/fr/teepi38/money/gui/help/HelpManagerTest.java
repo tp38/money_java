@@ -6,20 +6,28 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import fr.teepi38.money.AppDef;
 
-public class HelpManagerTest extends AssertJSwingJUnitTestCase {
+public class HelpManagerTest {
     private FrameFixture ff;
     private AppDef app;
     private SimpleDateFormat sdf;
     private HelpManager hm;
 
-    @Override
+    @BeforeAll
+    public static void setUpOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
+
+    @BeforeEach
     public void onSetUp() {
         app = AppDef.builder().build();
         sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -37,7 +45,7 @@ public class HelpManagerTest extends AssertJSwingJUnitTestCase {
         }
 
         JFrame frame = GuiActionRunner.execute( () -> new JFrame() );
-        ff = new FrameFixture(robot(), frame);
+        ff = new FrameFixture(frame);
         ff.show();
 
         hm = new HelpManager( app );
@@ -53,6 +61,11 @@ public class HelpManagerTest extends AssertJSwingJUnitTestCase {
     public void have_a_readme_method() {
         GuiActionRunner.execute( () -> ff.target().add( hm.readme() ) );
         ff.textBox("help_readme_editor");
+    }
+
+    @AfterEach
+    public void tearDown() {
+        ff.cleanUp();
     }
     
 }

@@ -1,15 +1,18 @@
 package fr.teepi38.money.gui.help;
 
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertTrue;
 
 import javax.swing.JFrame;
 
-public class HelpReadmePanelTest  extends AssertJSwingJUnitTestCase {
+public class HelpReadmePanelTest {
     private FrameFixture ff;
 
     class HelpReadmePanelFrame extends JFrame {
@@ -19,10 +22,15 @@ public class HelpReadmePanelTest  extends AssertJSwingJUnitTestCase {
         }
     }
 
-    @Override
+    @BeforeAll
+    public static void setUpOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
+
+    @BeforeEach
     public void onSetUp() {
         JFrame frame = GuiActionRunner.execute( () -> new HelpReadmePanelFrame() );
-        ff = new FrameFixture(robot(), frame);
+        ff = new FrameFixture(frame);
         ff.show();
     }
 
@@ -41,6 +49,11 @@ public class HelpReadmePanelTest  extends AssertJSwingJUnitTestCase {
     public void have_an_editor_pane_with_changelog() {
         String text = ff.panel("help_readme_pane").textBox("help_readme_editor").requireNotEditable().target().getText();
         assertTrue( text.contains("changelog") );
+    }
+
+    @AfterEach
+    public void tearDown() {
+        ff.cleanUp();
     }
 
 }

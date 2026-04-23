@@ -2,6 +2,8 @@ package fr.teepi38.money;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.text.SimpleDateFormat;
 import java.util.Properties;
@@ -9,24 +11,29 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import fr.teepi38.money.dao.Credential;
+import fr.teepi38.money.dao.couchdb.RelaxDb;
 import fr.teepi38.money.gui.InfoMessage;
-import fr.teepi38.money.gui.WelcomePanel;
+import fr.teepi38.money.gui.welcome.WelcomePanel;
 /**
  * Main class for couchdb mney client
  * @author : <a href="mailto:thierry.probst@free.fr">Thierry Probst</a>
  * @version 0.3, 21/03/2026
  * @since 0.0.0
  */
-public class Money extends JFrame
+public class Money extends JFrame  implements ActionListener
 {
 
     private MoneyControler money_controler;
 
-    // protected HelpManager help;
     protected AppDef app;
     protected MoneyMenu main_menu_bar;
     protected JPanel current_panel;
     protected InfoMessage info_msg;
+    protected Credential cred = null;
+    protected RelaxDb db = null;
+
 
     /**
      * constructor
@@ -37,6 +44,8 @@ public class Money extends JFrame
     public Money( AppDef app ) {
         // the frame container
         super(app.getName() + " - " + app.getVersion());
+        this.app = app;
+        
         setName("money_frame");
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         addWindowListener( new ApplicationExit() );
@@ -49,17 +58,16 @@ public class Money extends JFrame
         mainPane.setOpaque(true);
         setContentPane(mainPane);
 
-        // help = new HelpManager(app);
-
         // menu on the north zone
         money_controler = new MoneyControler( this );
         main_menu_bar = new MoneyMenu( money_controler );
         add( main_menu_bar, BorderLayout.PAGE_START );
 
-        // welcome image on the center zone
-        WelcomePanel welcomePane = new WelcomePanel();
-        current_panel = welcomePane;
-        add( welcomePane, BorderLayout.CENTER );
+        // welcome panel on the center zone
+        WelcomePanel welcome_pane = new WelcomePanel();
+        welcome_pane.getDb().setActionListener(this);
+        current_panel = welcome_pane;
+        add( welcome_pane, BorderLayout.CENTER );
 
         // info_msg on the south zone
         info_msg = new InfoMessage();
@@ -71,6 +79,7 @@ public class Money extends JFrame
         setVisible(true);
     }
 
+    
 
     /**
      * read some static data from conf.properties 
@@ -105,11 +114,26 @@ public class Money extends JFrame
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                AppDef app = readProperties();
+                AppDef app =  readProperties();
                 new Money( app );
             }
         });
 
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if( current_panel instanceof WelcomePanel ) {
+            WelcomePanel pane = (WelcomePanel)current_panel;
+            cred = pane.getDb().getCredential();
+            db = pane.getDb().getRelaxDb();
+            if( cred != null && db != null ) {
+                info_msg.InfoText( "you're now on "+ db.toString() +" with "+cred.toString()+"."  );
+                main_menu_bar.enableEntries();
+            } else {
+                info_msg.InfoText( "something goes wrong !!");
+            }
+        }
     }
     
 }

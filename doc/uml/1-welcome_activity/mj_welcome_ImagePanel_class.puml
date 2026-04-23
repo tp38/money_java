@@ -1,0 +1,13 @@
+@startuml 'diagram class MyMoneyRelax'
+
+hide empty members
+
+class ImagePanel 
+class JPanel #LightGreen
+class JLabel #LightGreen
+
+ImagePanel -|> JPanel
+ImagePanel --> JLabel
+
+
+@enduml

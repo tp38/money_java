@@ -1,9 +1,12 @@
 package fr.teepi38.money.gui.help;
 
+import org.assertj.swing.edt.FailOnThreadViolationRepaintManager;
 import org.assertj.swing.edt.GuiActionRunner;
 import org.assertj.swing.fixture.FrameFixture;
-import org.assertj.swing.junit.testcase.AssertJSwingJUnitTestCase;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import fr.teepi38.money.AppDef;
 
@@ -13,20 +16,25 @@ import java.util.Properties;
 
 import javax.swing.JFrame;
 
-public class HelpAboutPanelTest  extends AssertJSwingJUnitTestCase {
+public class HelpAboutPanelTest {
     private AppDef app;
     private SimpleDateFormat sdf;
     private FrameFixture ff;
 
 
     class HelpAboutPanelFrame extends JFrame {
-    public HelpAboutPanelFrame() {
-        add( new HelpAboutPanel( app ) );
-        pack();
+        public HelpAboutPanelFrame() {
+            add( new HelpAboutPanel( app ) );
+            pack();
+        }
     }
-}
 
-    @Override
+    @BeforeAll
+    public static void setUpOnce() {
+        FailOnThreadViolationRepaintManager.install();
+    }
+
+    @BeforeEach
     public void onSetUp() {
         app = AppDef.builder().build();
         sdf = new SimpleDateFormat("dd.MM.yyyy");
@@ -44,7 +52,7 @@ public class HelpAboutPanelTest  extends AssertJSwingJUnitTestCase {
         }
 
         JFrame frame = GuiActionRunner.execute( () -> new HelpAboutPanelFrame() );
-        ff = new FrameFixture(robot(), frame);
+        ff = new FrameFixture(frame);
         ff.show();
     }
 
@@ -77,5 +85,9 @@ public class HelpAboutPanelTest  extends AssertJSwingJUnitTestCase {
         ff.panel("help_about_pane").label("help_about_author_value").requireVisible().requireText( app.getAuthor() );
     }
 
+    @AfterEach
+    public void tearDown() {
+        ff.cleanUp();
+    }
 }
 

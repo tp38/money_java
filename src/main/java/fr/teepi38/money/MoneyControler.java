@@ -3,10 +3,9 @@ package fr.teepi38.money;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JMenuItem;
 
-import fr.teepi38.money.gui.WelcomePanel;
+import fr.teepi38.money.gui.welcome.WelcomePanel;
 import fr.teepi38.money.gui.help.HelpManager;
 
 /**
@@ -43,6 +42,8 @@ class MoneyControler implements ActionListener {
                     else
                         outer.current_panel = help.readme();
                     break;
+                case "exit_item" :
+                    outer.dispose();
                 default:
                     break;
             }
